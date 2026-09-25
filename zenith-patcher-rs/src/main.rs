@@ -1285,6 +1285,9 @@ fn find_local_repack(project: GameProject, manual_repack: Option<PathBuf>) -> Op
     let home = std::env::var("HOME").unwrap_or_default();
     let possible_dirs = vec![
         PathBuf::from("."),
+        PathBuf::from("./patches"),
+        PathBuf::from("patches"),
+        PathBuf::from("../patches"),
         PathBuf::from(&home).join("Downloads"),
         PathBuf::from(&home).join("Téléchargements"),
         PathBuf::from(&home).join("Bureau"),
@@ -1300,13 +1303,27 @@ fn find_local_repack(project: GameProject, manual_repack: Option<PathBuf>) -> Op
             "undertale-yellow.zip",
             "UndertaleYellow.zip",
         ],
-        GameProject::RedAndYellow => vec![
-            "Undertale.Red.and.Yellow.v2.1.4.FR.Linux.zip",
-            "Undertale.Red.and.Yellow.v2.1.4.FR.Windows.zip",
-            "Undertale_Red_and_Yellow_FR.zip",
-            "undertale-red-yellow.zip",
-            "ry-assets.zip",
-        ],
+        GameProject::RedAndYellow => {
+            if cfg!(target_os = "linux") {
+                vec![
+                    "Undertale.Red.and.Yellow.v2.1.4.FR.Linux.zip",
+                    "Undertale_Red_and_Yellow_FR_Linux.zip",
+                    "Undertale.Red.and.Yellow.v2.1.4.FR.Windows.zip",
+                    "Undertale_Red_and_Yellow_FR.zip",
+                    "undertale-red-yellow.zip",
+                    "ry-assets.zip",
+                ]
+            } else {
+                vec![
+                    "Undertale.Red.and.Yellow.v2.1.4.FR.Windows.zip",
+                    "Undertale_Red_and_Yellow_FR_Windows.zip",
+                    "Undertale.Red.and.Yellow.v2.1.4.FR.Linux.zip",
+                    "Undertale_Red_and_Yellow_FR.zip",
+                    "undertale-red-yellow.zip",
+                    "ry-assets.zip",
+                ]
+            }
+        }
     };
 
     for dir in &possible_dirs {
@@ -1613,11 +1630,16 @@ fn start_patching_process(state_mutex: Arc<Mutex<AppState>>) {
         }
 
         // --- Logique du Patcher Manuel avec Fichier Local ---
+        let orig_sz = fs::metadata(&original_file).map(|m| m.len()).unwrap_or(0);
+        let is_vanilla = file_hash == "b718f8223a5bb31979ffeed10be6140c857b882fc0d0462b89d6287ae38c81c7" || orig_sz < 75_000_000;
+        let is_old_fr = file_hash == "6e131d2efbe0fd36fd96e76e909dd754b3909fec87e769f7792a17c6ded22d86";
+
         let local_patch_paths = match project {
             GameProject::UndertaleYellow => vec![
                 PathBuf::from("./patches/uty-fr-v0.5.0.xdelta"),
                 PathBuf::from("./uty-fr-v0.5.0.xdelta"),
                 PathBuf::from("uty-fr-v0.5.0.xdelta"),
+                PathBuf::from("../patches/uty-fr-v0.5.0.xdelta"),
             ],
             GameProject::RedAndYellow => {
                 if is_unx {
@@ -1625,13 +1647,33 @@ fn start_patching_process(state_mutex: Arc<Mutex<AppState>>) {
                         PathBuf::from("./patches/ry-fr-linux-v2.1.4.xdelta"),
                         PathBuf::from("./ry-fr-linux-v2.1.4.xdelta"),
                         PathBuf::from("ry-fr-linux-v2.1.4.xdelta"),
+                        PathBuf::from("../patches/ry-fr-linux-v2.1.4.xdelta"),
+                    ]
+                } else if is_vanilla {
+                    vec![
+                        PathBuf::from("./patches/ry-fr-vanilla-v2.2.0.xdelta"),
+                        PathBuf::from("./ry-fr-vanilla-v2.2.0.xdelta"),
+                        PathBuf::from("ry-fr-vanilla-v2.2.0.xdelta"),
+                        PathBuf::from("../patches/ry-fr-vanilla-v2.2.0.xdelta"),
+                        PathBuf::from("./patches/ry-fr-vanilla.xdelta"),
+                    ]
+                } else if is_old_fr {
+                    vec![
+                        PathBuf::from("./patches/ry-fr-update-from-old-v2.2.0.xdelta"),
+                        PathBuf::from("./ry-fr-update-from-old-v2.2.0.xdelta"),
+                        PathBuf::from("ry-fr-update-from-old-v2.2.0.xdelta"),
+                        PathBuf::from("../patches/ry-fr-update-from-old-v2.2.0.xdelta"),
                     ]
                 } else {
                     vec![
+                        PathBuf::from("./patches/ry-fr-v2.2.0.xdelta"),
+                        PathBuf::from("./ry-fr-v2.2.0.xdelta"),
+                        PathBuf::from("ry-fr-v2.2.0.xdelta"),
+                        PathBuf::from("../patches/ry-fr-v2.2.0.xdelta"),
                         PathBuf::from("./patches/ry-fr-v2.1.4.xdelta"),
                         PathBuf::from("./ry-fr-v2.1.4.xdelta"),
                         PathBuf::from("ry-fr-v2.1.4.xdelta"),
-                        PathBuf::from("./patches/ry-fr-v2.2.0.xdelta"),
+                        PathBuf::from("../patches/ry-fr-v2.1.4.xdelta"),
                     ]
                 }
             }
@@ -1654,23 +1696,14 @@ fn start_patching_process(state_mutex: Arc<Mutex<AppState>>) {
                 GameProject::RedAndYellow => {
                     if is_unx {
                         "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-fr-linux-v2.1.4.xdelta".to_string()
-                    } else if file_hash == "b718f8223a5bb31979ffeed10be6140c857b882fc0d0462b89d6287ae38c81c7" {
-                        // Base Undertale Vanilla v1.08 (Steam/GOG)
+                    } else if is_vanilla {
                         "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-fr-vanilla-v2.2.0.xdelta".to_string()
-                    } else if file_hash == "6e131d2efbe0fd36fd96e76e909dd754b3909fec87e769f7792a17c6ded22d86" {
-                        // Ancienne version FR avec bugs -> mise à jour directe
+                    } else if is_old_fr {
                         "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-fr-update-from-old-v2.2.0.xdelta".to_string()
                     } else if file_hash == "d36131d54f86fd4a9bbb438491e6fe87f6e302a8919c24266774dc87b85f9219" {
-                        // Base Red & Yellow Anglaise
                         "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-fr-v2.2.0.xdelta".to_string()
                     } else {
-                        // Fallback selon la taille
-                        let sz = fs::metadata(&original_file).map(|m| m.len()).unwrap_or(0);
-                        if sz < 75_000_000 {
-                            "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-fr-vanilla-v2.2.0.xdelta".to_string()
-                        } else {
-                            "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-fr-v2.2.0.xdelta".to_string()
-                        }
+                        "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-fr-v2.2.0.xdelta".to_string()
                     }
                 }
             };
@@ -1771,12 +1804,30 @@ fn start_patching_process(state_mutex: Arc<Mutex<AppState>>) {
                 if project == GameProject::RedAndYellow && is_unx {
                     let runner_path = game_path.join("runner");
                     if !runner_path.exists() {
-                        {
-                            let mut state = state_mutex.lock().unwrap();
-                            state.status_message = "Finalisation du lanceur Linux...".to_string();
+                        let local_runners = vec![
+                            PathBuf::from("./runner"),
+                            PathBuf::from("./patches/runner"),
+                            PathBuf::from("../patches/runner"),
+                            PathBuf::from("patches/runner"),
+                        ];
+                        let mut found_runner = false;
+                        for lr in local_runners {
+                            if lr.exists() {
+                                if let Ok(_) = fs::copy(&lr, &runner_path) {
+                                    found_runner = true;
+                                    break;
+                                }
+                            }
                         }
-                        let runner_url = "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/runner";
-                        let _ = download_file(runner_url, &runner_path, &state_mutex, 0.92, 0.98);
+
+                        if !found_runner {
+                            {
+                                let mut state = state_mutex.lock().unwrap();
+                                state.status_message = "Finalisation du lanceur Linux...".to_string();
+                            }
+                            let runner_url = "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/runner";
+                            let _ = download_file(runner_url, &runner_path, &state_mutex, 0.92, 0.98);
+                        }
                     }
                     #[cfg(unix)]
                     {
@@ -1790,34 +1841,64 @@ fn start_patching_process(state_mutex: Arc<Mutex<AppState>>) {
                 }
 
                 if project == GameProject::RedAndYellow && !is_unx {
-                    {
-                        let mut state = state_mutex.lock().unwrap();
-                        state.status_message = "Téléchargement des musiques du mod (124 Mo)...".to_string();
-                        state.progress = 0.85;
-                    }
-                    let assets_url = "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-assets.zip";
-                    let assets_zip = temp_dir.path().join("ry-assets.zip");
-                    match download_file(assets_url, &assets_zip, &state_mutex, 0.85, 0.96) {
-                        Ok(_) => {
-                            {
-                                let mut state = state_mutex.lock().unwrap();
-                                state.status_message = "Extraction des musiques...".to_string();
-                                state.progress = 0.97;
-                            }
-                            if let Err(e) = extract_zip(&assets_zip, &game_path) {
-                                let mut state = state_mutex.lock().unwrap();
-                                state.current_step = Step::Error;
-                                state.error_message = format!("Échec de l'extraction des musiques du mod :\n{}", e);
-                                state.is_patching = false;
-                                return;
+                    // Vérifier si les musiques du mod sont déjà présentes (ex: patch sur un jeu Red & Yellow anglais déjà existant)
+                    let mod_music_marker = game_path.join("mus_options_yellow.ogg");
+                    if !mod_music_marker.exists() {
+                        {
+                            let mut state = state_mutex.lock().unwrap();
+                            state.status_message = "Installation des musiques du mod (124 Mo)...".to_string();
+                            state.progress = 0.85;
+                        }
+
+                        let home = std::env::var("HOME").unwrap_or_default();
+                        let local_asset_zips = vec![
+                            PathBuf::from("./patches/ry-assets.zip"),
+                            PathBuf::from("./ry-assets.zip"),
+                            PathBuf::from("patches/ry-assets.zip"),
+                            PathBuf::from("../patches/ry-assets.zip"),
+                            PathBuf::from(&home).join("Downloads/ry-assets.zip"),
+                            PathBuf::from(&home).join("Téléchargements/ry-assets.zip"),
+                            PathBuf::from(&home).join("Bureau/ry-assets.zip"),
+                            PathBuf::from(&home).join("Desktop/ry-assets.zip"),
+                        ];
+
+                        let mut asset_extracted = false;
+                        for local_zip in local_asset_zips {
+                            if local_zip.exists() {
+                                {
+                                    let mut state = state_mutex.lock().unwrap();
+                                    state.status_message = "Extraction des musiques locales...".to_string();
+                                    state.progress = 0.95;
+                                }
+                                if let Ok(_) = extract_zip(&local_zip, &game_path) {
+                                    asset_extracted = true;
+                                    break;
+                                }
                             }
                         }
-                        Err(e) => {
-                            let mut state = state_mutex.lock().unwrap();
-                            state.current_step = Step::Error;
-                            state.error_message = format!("Échec du téléchargement des musiques du mod :\n{}", e);
-                            state.is_patching = false;
-                            return;
+
+                        if !asset_extracted {
+                            let assets_url = "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-assets.zip";
+                            let assets_zip = temp_dir.path().join("ry-assets.zip");
+                            match download_file(assets_url, &assets_zip, &state_mutex, 0.85, 0.96) {
+                                Ok(_) => {
+                                    {
+                                        let mut state = state_mutex.lock().unwrap();
+                                        state.status_message = "Extraction des musiques...".to_string();
+                                        state.progress = 0.97;
+                                    }
+                                    if let Err(e) = extract_zip(&assets_zip, &game_path) {
+                                        let mut state = state_mutex.lock().unwrap();
+                                        state.current_step = Step::Error;
+                                        state.error_message = format!("Échec de l'extraction des musiques du mod :\n{}", e);
+                                        state.is_patching = false;
+                                        return;
+                                    }
+                                }
+                                Err(e) => {
+                                    eprintln!("Avertissement: Téléchargement ry-assets.zip échoué : {}", e);
+                                }
+                            }
                         }
                     }
                 }

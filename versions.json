@@ -5,7 +5,7 @@
       "patch_url": "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/uty-fr-v0.5.0/uty-fr-v0.5.0.xdelta",
       "repack_url": "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/uty-fr-v0.5.0/Undertale.Yellow.v1_1PatchFr.zip",
       "date": "2026-07-12",
-      "changelog": "Première version stable du patch de traduction française d'Undertale Yellow par Arvix.",
+      "changelog": "Premi\u00e8re version stable du patch de traduction fran\u00e7aise d'Undertale Yellow par Arvix.",
       "patch": {
         "filename": "uty-fr-v0.5.0.xdelta",
         "sha256": "c227defe6d78994e3f1b9323a0c462a91906049bbf381930ca6964eeda23dfa3",
@@ -21,16 +21,16 @@
       "repack_linux_url": "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/Undertale.Red.and.Yellow.v2.1.4.FR.Linux.zip",
       "assets_url": "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-assets.zip",
       "date": "2026-09-06",
-      "changelog": "Patch officiel Undertale Red & Yellow v2.1.4 FR (Windows & Linux). Fusion non-destructive intégrale, polices françaises 300 glyphes, HUD PV/PO et sprites français de combat intégrés.",
+      "changelog": "Patch officiel Undertale Red & Yellow v2.1.4 FR (Windows & Linux). Fusion non-destructive int\u00e9grale, polices fran\u00e7aises 300 glyphes, HUD PV/PO et sprites fran\u00e7ais de combat int\u00e9gr\u00e9s.",
       "patch": {
         "filename": "ry-fr-v2.2.0.xdelta",
-        "sha256": "9fc8f8aba5494791071d34505af00e5e27dc513a0fa0afcf1e9cdcf07890d889",
-        "size": 15167649
+        "sha256": "d1d9213945d3538a202028b1adfe9d7aca832a739d05b099686b5ce055d9fdc8",
+        "size": 12638367
       },
       "patch_linux": {
         "filename": "ry-fr-linux-v2.1.4.xdelta",
-        "sha256": "107b16fbed9e0876454cf94e0b2b6f472c98dea1d097cd073e3bea84dcd2d5ae",
-        "size": 15648312
+        "sha256": "02387e5fdd1a5b53d219c7bbadeaf40603d68181a12452257cb0f1b6b67a97e8",
+        "size": 12202973
       }
     }
   }

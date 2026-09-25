@@ -6,15 +6,15 @@
   "patches": {
     "windows": {
       "filename": "ry-fr-v2.2.0.xdelta",
-      "sha256": "9fc8f8aba5494791071d34505af00e5e27dc513a0fa0afcf1e9cdcf07890d889",
-      "size": 15167649,
-      "target_sha256": "7aa4af0922535b547a7ca39a7c75de78623b866a3fd67b65830159cc94d686ba"
+      "sha256": "d1d9213945d3538a202028b1adfe9d7aca832a739d05b099686b5ce055d9fdc8",
+      "size": 12638367,
+      "target_sha256": "90dd4f6c1b7250f4bf86349c98d82c432d01f89d30cbb3464ca8a0a9cce445b2"
     },
     "linux": {
       "filename": "ry-fr-linux-v2.1.4.xdelta",
-      "sha256": "107b16fbed9e0876454cf94e0b2b6f472c98dea1d097cd073e3bea84dcd2d5ae",
-      "size": 15648312,
-      "target_sha256": "d1172bce87593c08707538cf25430df717d6cbac85f48589815cc0ce8d4fe12c"
+      "sha256": "02387e5fdd1a5b53d219c7bbadeaf40603d68181a12452257cb0f1b6b67a97e8",
+      "size": 12202973,
+      "target_sha256": "90dd4f6c1b7250f4bf86349c98d82c432d01f89d30cbb3464ca8a0a9cce445b2"
     }
   }
 }
