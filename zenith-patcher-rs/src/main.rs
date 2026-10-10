@@ -29,7 +29,7 @@ const APP_ICON_BYTES: &[u8] = include_bytes!("../assets/coeur.webp");
 const APP_ICON_PNG_BYTES: &[u8] = include_bytes!("../assets/coeur.png");
 
 // URL du versions.json sur GitHub (source de vérité pour les mises à jour)
-const VERSIONS_URL: &str = "https://raw.githubusercontent.com/redyellowpatchfr-a11y/patcher/main/versions.json";
+const VERSIONS_URL: &str = "https://raw.githubusercontent.com/cronos-neo/undertale-fr-patcher/main/versions.json";
 
 // Liens de support
 const DISCORD_URL: &str = "https://discord.gg/mAwZBxhSSf";
@@ -443,7 +443,7 @@ impl egui_software_backend::App for PatcherApp {
             .stroke(egui::Stroke::new(1.0_f32, egui::Color32::from_rgb(45, 32, 60)))
             .inner_margin(egui::Margin::symmetric(14, 6));
 
-        egui::TopBottomPanel::top("top_titlebar")
+        egui::Panel::top("top_titlebar")
             .frame(top_bar_frame)
             .show_inside(ui, |ui| {
                 ui.horizontal(|ui| {
@@ -526,7 +526,7 @@ impl egui_software_backend::App for PatcherApp {
             .stroke(egui::Stroke::new(1.0_f32, egui::Color32::from_rgb(32, 22, 46)))
             .inner_margin(egui::Margin::symmetric(24, 10));
 
-        egui::TopBottomPanel::bottom("bottom_bar")
+        egui::Panel::bottom("bottom_bar")
             .frame(bottom_bar_frame)
             .show_inside(ui, |ui| {
                 ui.horizontal(|ui| {
@@ -1221,7 +1221,6 @@ fn start_game_detection(state: &mut AppState) {
         format!("{}/.steam/debian-installation/steamapps/common", home),
         format!("{}/snap/steam/common/.local/share/Steam/steamapps/common", home),
         format!("{}/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common", home),
-        format!("{}/Bureau/bazar", home),
         format!("{}/Bureau", home),
         format!("{}/Games", home),
         "C:\\Program Files (x86)\\Steam\\steamapps\\common".to_string(),

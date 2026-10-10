@@ -3,11 +3,21 @@ patches/*.zip
 patches/*.xdelta
 *.zip
 *.xdelta
+*.tar.gz
+
+# Binaires compilés locaux
+Undertale-FR-Patcher
+zenith-patcher-linux
+Zenith-Patcher.exe
+patches/runner
+*.exe
+*.unx
+*.win
+
+# Rust / Target
+zenith-patcher-rs/target/
+target/
 
 # OS
 .DS_Store
 Thumbs.db
-
-*.exe
-*.unx
-*.win
