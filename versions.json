@@ -1,0 +1,37 @@
+{
+  "projects": {
+    "uty-fr": {
+      "version": "0.5.0",
+      "patch_url": "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/uty-fr-v0.5.0/uty-fr-v0.5.0.xdelta",
+      "repack_url": "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/uty-fr-v0.5.0/Undertale.Yellow.v1_1PatchFr.zip",
+      "date": "2026-07-12",
+      "changelog": "Premi\u00e8re version stable du patch de traduction fran\u00e7aise d'Undertale Yellow par Arvix.",
+      "patch": {
+        "filename": "uty-fr-v0.5.0.xdelta",
+        "sha256": "c227defe6d78994e3f1b9323a0c462a91906049bbf381930ca6964eeda23dfa3",
+        "size": 56653766
+      }
+    },
+    "ry-fr": {
+      "version": "2.1.4",
+      "patch_url": "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-fr-v2.2.0.xdelta",
+      "patch_vanilla_url": "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-fr-vanilla-v2.2.0.xdelta",
+      "patch_linux_url": "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-fr-linux-v2.1.4.xdelta",
+      "repack_url": "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/Undertale.Red.and.Yellow.v2.1.4.FR.Windows.zip",
+      "repack_linux_url": "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/Undertale.Red.and.Yellow.v2.1.4.FR.Linux.zip",
+      "assets_url": "https://github.com/redyellowpatchfr-a11y/patcher/releases/download/ry-fr-v2.2.0/ry-assets.zip",
+      "date": "2026-09-06",
+      "changelog": "Patch officiel Undertale Red & Yellow v2.1.4 FR (Windows & Linux). Fusion non-destructive int\u00e9grale, polices fran\u00e7aises 300 glyphes, HUD PV/PO et sprites fran\u00e7ais de combat int\u00e9gr\u00e9s.",
+      "patch": {
+        "filename": "ry-fr-v2.2.0.xdelta",
+        "sha256": "d1d9213945d3538a202028b1adfe9d7aca832a739d05b099686b5ce055d9fdc8",
+        "size": 12638367
+      },
+      "patch_linux": {
+        "filename": "ry-fr-linux-v2.1.4.xdelta",
+        "sha256": "02387e5fdd1a5b53d219c7bbadeaf40603d68181a12452257cb0f1b6b67a97e8",
+        "size": 12202973
+      }
+    }
+  }
+}

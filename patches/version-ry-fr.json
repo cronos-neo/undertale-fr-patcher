@@ -1,0 +1,20 @@
+{
+  "project": "ry-fr",
+  "version": "2.1.4",
+  "date": "2026-09-06",
+  "base": "undertale-red-yellow-2.1.4",
+  "patches": {
+    "windows": {
+      "filename": "ry-fr-v2.2.0.xdelta",
+      "sha256": "d1d9213945d3538a202028b1adfe9d7aca832a739d05b099686b5ce055d9fdc8",
+      "size": 12638367,
+      "target_sha256": "90dd4f6c1b7250f4bf86349c98d82c432d01f89d30cbb3464ca8a0a9cce445b2"
+    },
+    "linux": {
+      "filename": "ry-fr-linux-v2.1.4.xdelta",
+      "sha256": "02387e5fdd1a5b53d219c7bbadeaf40603d68181a12452257cb0f1b6b67a97e8",
+      "size": 12202973,
+      "target_sha256": "90dd4f6c1b7250f4bf86349c98d82c432d01f89d30cbb3464ca8a0a9cce445b2"
+    }
+  }
+}

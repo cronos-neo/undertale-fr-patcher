@@ -1,0 +1,31 @@
+[package]
+name = "undertale-fr-patcher"
+version = "2.2.6"
+edition = "2021"
+authors = ["Cronos, Anthan"]
+description = "Patcher de traduction française pour Undertale, Undertale Yellow et Red & Yellow"
+
+[dependencies]
+# GUI : rendu CPU pur via softbuffer (GDI sur Windows) -- aucun GPU requis
+egui = { version = "0.34", default-features = false, features = ["default_fonts"] }
+egui_software_backend = { path = "./egui_software_backend", features = ["winit"] }
+
+# Réseau, sérialisation, fichiers
+minreq = { version = "2.11", features = ["https-rustls"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+rfd = "0.14"
+sha2 = "0.10"
+image = { version = "0.25", default-features = false, features = ["png", "webp"] }
+tempfile = "3.8"
+webbrowser = "1.0"
+
+[profile.release]
+opt-level = "z"     # Optimize for size
+lto = true          # Enable Link Time Optimization
+codegen-units = 1   # Reduce parallel code generation units to increase optimization
+panic = "abort"     # Remove panic unwinding code
+strip = true        # Strip symbols from the binary
+
+[build-dependencies]
+winres = "0.1"
